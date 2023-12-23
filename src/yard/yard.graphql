@@ -1,0 +1,10 @@
+
+type Query {
+    getYard(id: Int): Yard
+}
+
+type Yard {
+    id: Int
+    yardName: String
+    yardEmail: String
+}
