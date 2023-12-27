@@ -1,4 +1,4 @@
-import { Resolver, Query, Args } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { YardService } from './yard.service';
 
 @Resolver('Yard')
@@ -10,7 +10,19 @@ export class YardResolver {
 
     @Query()
     async getYard(@Args('id') id: number) {
-        return this.yardService.findOneById(id)
+        // return this.yardService.findOneById(id)
+    }
+
+    @Mutation()
+    async addYard(@Args('input') data) {
+
+        return this.yardService.createYard(data)
+    }
+
+    async updateYard(@Args('id') id: number, @Args('email') email: string) {
+        console.log('calling in resolver.............', id, email);
+
+        return this.yardService.modifyYardEmail(id, email)
     }
     
 }

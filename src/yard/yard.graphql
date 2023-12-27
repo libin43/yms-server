@@ -3,8 +3,17 @@ type Query {
     getYard(id: Int): Yard
 }
 
+type Mutation {
+    addYard(input: YardInput!): Yard
+    updateYard(id: Int!, email: String!): Yard
+}
+
 type Yard {
-    id: Int
-    yardName: String
-    yardEmail: String
+    name: String!
+    email: String!
+}
+
+input YardInput {
+    name: String!
+    email: String!
 }
