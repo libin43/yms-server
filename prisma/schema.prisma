@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,23 +7,33 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-
-
 model yard {
-  id Int  @id @default(autoincrement())
-  name String
-  email String?
-  status String @default("inactive")
-  role String @default("yard")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            Int    @id @default(autoincrement())
+  yard_name     String @unique
+  yard_email    String @unique
+  address       String?
+  owner_name    String?
+  owner_contact String? @unique
+  aadhar_number String? @unique
+  city          String
+  state         String
+  pincode       String
+  status        String  @default("inactive")
+  role          String  @default("yard")
+  password      String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model bank_admin {
-  id Int  @id @default(autoincrement())
-  bank_name String
-  role String @default("bankAdmin")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                  Int      @id @default(autoincrement())
+  bank_name           String @unique
+  bank_email          String @unique
+  bank_admin_name     String?
+  bank_admin_contact  String? @unique
+  bank_admin_location String  @default("india")
+  role                String   @default("bankAdmin")
+  status              String   @default("inactive")
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 }

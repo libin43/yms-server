@@ -4,19 +4,37 @@ import { AppService } from './app.service';
 
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { join } from 'path';
+import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { YardModule } from './yard/yard.module';
+
 
 @Module({
   imports: [
-    YardModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
+      playground: false,
+      plugins: [ApolloServerPluginLandingPageLocalDefault()],
       typePaths: ['./**/*.graphql'],
-      // definitions: {
-      //   path: join( process.cwd(), 'src/graphql.schema.ts')
-      // },
+      formatError: (error) => {
+        console.log(error,'in gpql error formatter');
+        const originalError = error.extensions?.originalError as Error;
+       
+        if (!originalError) {
+          return {
+            message: error.message,
+            code: error.extensions?.code,
+          };
+        }
+        return {
+          message: originalError.message,
+          // code: error.extensions?.code,
+          status: error.extensions?.status,
+          // stacktrace: error.extensions?.stacktrace
+        };
+      },
     }),
+
+    YardModule,
   ],
   controllers: [AppController],
   providers: [AppService],

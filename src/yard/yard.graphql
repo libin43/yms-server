@@ -1,19 +1,43 @@
 
 type Query {
-    getYard(id: Int): Yard
+    getYard(id: Int!): Yard
+    getAllYard: [Yard]
 }
 
 type Mutation {
-    addYard(input: YardInput!): Yard
+    addYard(input: YardInput!): YardRegister
     updateYard(id: Int!, email: String!): Yard
 }
 
+
+type YardRegister {
+    yard_name: String!
+    yard_email: String!
+    owner_name: String!
+    # owner_contact: String!
+    # city: String!
+    # state: String!
+    # pincode: String!
+    # password: String!
+}
+
 type Yard {
-    name: String!
-    email: String!
+    yard_name: String!
+    yard_email: String!
+    owner_name: String!
+    owner_contact: String!
+    city: String!
+    state: String!
+    pincode: String!
 }
 
 input YardInput {
-    name: String!
-    email: String!
+    yard_name: String!
+    yard_email: String!
+    owner_name: String!
+    owner_contact: String!
+    city: String!
+    state: String!
+    pincode: String!
+    password: String!
 }

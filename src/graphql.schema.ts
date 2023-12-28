@@ -9,23 +9,42 @@
 /* eslint-disable */
 
 export class YardInput {
-    name: string;
-    email: string;
+    yard_name: string;
+    yard_email: string;
+    owner_name: string;
+    owner_contact: string;
+    city: string;
+    state: string;
+    pincode: string;
+    password: string;
 }
 
 export abstract class IQuery {
-    abstract getYard(id?: Nullable<number>): Nullable<Yard> | Promise<Nullable<Yard>>;
+    abstract getYard(id: number): Nullable<Yard> | Promise<Nullable<Yard>>;
+
+    abstract getAllYard(): Nullable<Nullable<Yard>[]> | Promise<Nullable<Nullable<Yard>[]>>;
 }
 
 export abstract class IMutation {
-    abstract addYard(input: YardInput): Nullable<Yard> | Promise<Nullable<Yard>>;
+    abstract addYard(input: YardInput): Nullable<YardRegister> | Promise<Nullable<YardRegister>>;
 
     abstract updateYard(id: number, email: string): Nullable<Yard> | Promise<Nullable<Yard>>;
 }
 
+export class YardRegister {
+    yard_name: string;
+    yard_email: string;
+    owner_name: string;
+}
+
 export class Yard {
-    name: string;
-    email: string;
+    yard_name: string;
+    yard_email: string;
+    owner_name: string;
+    owner_contact: string;
+    city: string;
+    state: string;
+    pincode: string;
 }
 
 type Nullable<T> = T | null;

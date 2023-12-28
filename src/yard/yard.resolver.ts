@@ -5,24 +5,34 @@ import { YardService } from './yard.service';
 export class YardResolver {
 
     constructor(
-        private yardService: YardService ,
-    ) {}
+        private yardService: YardService,
+    ) { }
 
     @Query()
     async getYard(@Args('id') id: number) {
-        // return this.yardService.findOneById(id)
+        return this.yardService.findOneById(id)
+    }
+
+    @Query()
+    async getAllYard() {
+        console.log('hitting');
+        
+        return this.yardService.findAllYard()
     }
 
     @Mutation()
     async addYard(@Args('input') data) {
-
-        return this.yardService.createYard(data)
+        try{
+            return this.yardService.createYard(data)
+        } catch (error) {
+            console.log(error, 'error in resolver');
+            
+        }
     }
 
+    @Mutation()
     async updateYard(@Args('id') id: number, @Args('email') email: string) {
-        console.log('calling in resolver.............', id, email);
-
         return this.yardService.modifyYardEmail(id, email)
     }
-    
+
 }
