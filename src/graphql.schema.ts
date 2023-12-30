@@ -19,6 +19,11 @@ export class YardInput {
     password: string;
 }
 
+export class YardCredential {
+    yard_email: string;
+    password: string;
+}
+
 export abstract class IQuery {
     abstract getYard(id: number): Nullable<Yard> | Promise<Nullable<Yard>>;
 
@@ -26,7 +31,9 @@ export abstract class IQuery {
 }
 
 export abstract class IMutation {
-    abstract addYard(input: YardInput): Nullable<YardRegister> | Promise<Nullable<YardRegister>>;
+    abstract login(input: YardCredential): Nullable<YardLogin> | Promise<Nullable<YardLogin>>;
+
+    abstract signup(input: YardInput): Nullable<YardRegister> | Promise<Nullable<YardRegister>>;
 
     abstract updateYard(id: number, email: string): Nullable<Yard> | Promise<Nullable<Yard>>;
 }
@@ -45,6 +52,11 @@ export class Yard {
     city: string;
     state: string;
     pincode: string;
+}
+
+export class YardLogin {
+    login_key: string;
+    role: string;
 }
 
 type Nullable<T> = T | null;

@@ -5,7 +5,8 @@ type Query {
 }
 
 type Mutation {
-    addYard(input: YardInput!): YardRegister
+    login(input: YardCredential!): YardLogin 
+    signup(input: YardInput!): YardRegister
     updateYard(id: Int!, email: String!): Yard
 }
 
@@ -21,6 +22,7 @@ type YardRegister {
     # password: String!
 }
 
+
 type Yard {
     yard_name: String!
     yard_email: String!
@@ -31,6 +33,11 @@ type Yard {
     pincode: String!
 }
 
+type YardLogin {
+    login_key: String!
+    role: String!
+}
+
 input YardInput {
     yard_name: String!
     yard_email: String!
@@ -39,5 +46,10 @@ input YardInput {
     city: String!
     state: String!
     pincode: String!
+    password: String!
+}
+
+input YardCredential {
+    yard_email: String!
     password: String!
 }

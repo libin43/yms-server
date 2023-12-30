@@ -20,14 +20,16 @@ export class YardResolver {
         return this.yardService.findAllYard()
     }
 
+
     @Mutation()
-    async addYard(@Args('input') data) {
-        try{
-            return this.yardService.createYard(data)
-        } catch (error) {
-            console.log(error, 'error in resolver');
-            
-        }
+    async login(@Args('input') data) {
+        
+        return this.yardService.verifyUser(data)
+    }
+
+    @Mutation()
+    async signup(@Args('input') data) {
+        return this.yardService.createYard(data)
     }
 
     @Mutation()
