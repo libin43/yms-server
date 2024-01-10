@@ -17,7 +17,7 @@ model yard {
   aadhar_number String? @unique
   city          String
   state         String
-  pincode       String
+  pincode       Float
   status        String  @default("inactive")
   role          String  @default("yard")
   password      String

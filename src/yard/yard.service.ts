@@ -1,26 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { yard, Prisma } from '@prisma/client';
-import { FirebaseAuthService } from 'auth/firebase/firebase-auth.service';
+// import { FirebaseAuthService } from 'auth/firebase/firebase-auth.service';
 
 
 @Injectable()
 export class YardService {
-    constructor(private prisma: PrismaService, private readonly firebaseAuthService: FirebaseAuthService) {}
+    constructor(private prisma: PrismaService) {}
 
-    async createYard(data: Prisma.yardCreateInput) {
-        console.log(this.firebaseAuthService,'hi');
+    // async createYard(data: Prisma.yardCreateInput) {
         
-        const userCredential = await this.firebaseAuthService.signupWithEmailAndPassword(
-            data?.yard_email,
-            data?.password,
-        )
-        console.log(userCredential,'singup credential');
+    //     const userCredential = await this.firebaseAuthService.signupWithEmailAndPassword(
+    //         data?.yard_email,
+    //         data?.password,
+    //     )
+    //     console.log(userCredential,'singup credential');
+
         
-        return this.prisma.yard.create({
-            data,
-        })
-    }
+    //     return this.prisma.yard.create({
+    //         data,
+    //     })
+    // }
 
     async modifyYardEmail(id: number, email: string) {
         
@@ -42,17 +42,29 @@ export class YardService {
         return this.prisma.yard.findMany();
     }
 
-    async verifyUser(data) {
-        console.log(data);
+    async verifyUser(yard_email: string, password: string) {
+        
+        const user = await this.prisma.yard.findUnique({
+            where: {
+                yard_email,
+                password,
+            },
+            select: {
+                id: true,
+                yard_name: true,
+                role: true
+            }
+        })
 
-        const userCredential = await this.firebaseAuthService.signInWithEmailAndPassword(
-            data?.yard_email,
-            data?.password,
-        )
-        if(userCredential){
-            console.log(userCredential);
+        
+         return {
+            user
+         }
         }
-        console.log('nexxttt');
         
     }
-}
+
+    // async signOutUser() {
+    //     return this.firebaseAuthService.signOut();
+    // }
+

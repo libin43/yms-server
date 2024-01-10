@@ -31,11 +31,13 @@ export abstract class IQuery {
 }
 
 export abstract class IMutation {
-    abstract login(input: YardCredential): Nullable<YardLogin> | Promise<Nullable<YardLogin>>;
-
     abstract signup(input: YardInput): Nullable<YardRegister> | Promise<Nullable<YardRegister>>;
 
+    abstract login(input: YardCredential): Nullable<YardLogin> | Promise<Nullable<YardLogin>>;
+
     abstract updateYard(id: number, email: string): Nullable<Yard> | Promise<Nullable<Yard>>;
+
+    abstract signOut(): Nullable<YardLogout> | Promise<Nullable<YardLogout>>;
 }
 
 export class YardRegister {
@@ -55,8 +57,13 @@ export class Yard {
 }
 
 export class YardLogin {
-    login_key: string;
-    role: string;
+    yard_name?: Nullable<string>;
+    accessToken?: Nullable<string>;
+    role?: Nullable<string>;
+}
+
+export class YardLogout {
+    message: string;
 }
 
 type Nullable<T> = T | null;

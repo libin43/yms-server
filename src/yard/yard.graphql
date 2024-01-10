@@ -5,9 +5,10 @@ type Query {
 }
 
 type Mutation {
-    login(input: YardCredential!): YardLogin 
     signup(input: YardInput!): YardRegister
+    login(input: YardCredential!): YardLogin 
     updateYard(id: Int!, email: String!): Yard
+    signOut: YardLogout
 }
 
 
@@ -34,8 +35,13 @@ type Yard {
 }
 
 type YardLogin {
-    login_key: String!
-    role: String!
+    yard_name: String
+    accessToken: String
+    role: String
+}
+
+type YardLogout {
+    message: String!
 }
 
 input YardInput {

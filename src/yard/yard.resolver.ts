@@ -1,5 +1,6 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { YardService } from './yard.service';
+import { Cookies } from 'src/common/decorators/cookie.decorator';
 
 @Resolver('Yard')
 export class YardResolver {
@@ -9,32 +10,40 @@ export class YardResolver {
     ) { }
 
     @Query()
-    async getYard(@Args('id') id: number) {
+    async getYard(
+        @Args('id') id: number,
+        @Cookies() cookies: any,
+        ) {
+            console.log('Received Cookies:', cookies);
         return this.yardService.findOneById(id)
     }
 
     @Query()
     async getAllYard() {
         console.log('hitting');
-        
+
         return this.yardService.findAllYard()
     }
 
 
     @Mutation()
-    async login(@Args('input') data) {
-        
-        return this.yardService.verifyUser(data)
-    }
+    // async signup(@Args('input') data) {
+    //     return this.yardService.createYard(data)
+    // }
 
-    @Mutation()
-    async signup(@Args('input') data) {
-        return this.yardService.createYard(data)
-    }
+    // @Mutation()
+    // async login(@Args('input') data) {
+    //     return this.yardService.verifyUser(data)
+    // }
 
     @Mutation()
     async updateYard(@Args('id') id: number, @Args('email') email: string) {
         return this.yardService.modifyYardEmail(id, email)
     }
+
+    // @Mutation()
+    // async signOut() {
+    //     return this.yardService.signOutUser();
+    // }
 
 }

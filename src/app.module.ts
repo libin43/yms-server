@@ -1,17 +1,19 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { YardModule } from './yard/yard.module';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
+      context: ({req, res}) => ({req, res}),
+      
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
       typePaths: ['./**/*.graphql'],
@@ -27,7 +29,7 @@ import { YardModule } from './yard/yard.module';
         }
         return {
           message: originalError.message,
-          // code: error.extensions?.code,
+          code: error.extensions?.code,
           status: error.extensions?.status,
           // stacktrace: error.extensions?.stacktrace
         };
@@ -35,6 +37,8 @@ import { YardModule } from './yard/yard.module';
     }),
 
     YardModule,
+    AuthModule,
+
   ],
   controllers: [AppController],
   providers: [AppService],
