@@ -13,13 +13,14 @@ import { AuthModule } from './auth/auth.module';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       context: ({req, res}) => ({req, res}),
-      
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
       typePaths: ['./**/*.graphql'],
+      status400ForVariableCoercionErrors: true,
       formatError: (error) => {
         console.log(error,'in gpql error formatter');
         const originalError = error.extensions?.originalError as Error;
+       console.log(originalError);
        
         if (!originalError) {
           return {
@@ -30,7 +31,7 @@ import { AuthModule } from './auth/auth.module';
         return {
           message: originalError.message,
           code: error.extensions?.code,
-          status: error.extensions?.status,
+          status: error.extensions?.statusCode,
           // stacktrace: error.extensions?.stacktrace
         };
       },

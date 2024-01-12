@@ -1,4 +1,4 @@
-import { Resolver, Mutation, Args, Context, GraphQLExecutionContext } from '@nestjs/graphql';
+import { Resolver, Mutation, Args, Context } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { Cookies } from 'src/common/decorators/cookie.decorator';
 import { response } from 'express';
@@ -25,6 +25,7 @@ export class AuthResolver {
             refreshToken,
             role,
         } = loginRes
+console.log(loginRes,'dfad');
 
 
         // Set secure HTTP-only cookie in the response

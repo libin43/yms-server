@@ -1,6 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { YardService } from 'src/yard/yard.service';
 import { JwtService } from '@nestjs/jwt';
+import { AuthenticationError } from '@nestjs/apollo';
 
 @Injectable()
 export class AuthService {
@@ -16,8 +17,9 @@ export class AuthService {
     // }
 
     async yardLogin (email: string, password: string): Promise<any> {
-        const user = await this.yardService.verifyUser(email, password)
-        if(!user?.user) throw new UnauthorizedException();
+        const user = await this.yardService.verifyUser(email, password)        
+        if(!user?.user) throw new AuthenticationError('Email and password doesnot match');
+       
         const {id, yard_name, role} = user.user
         const payload = {id, yard_name, role}
         const {refreshToken, accessToken} = await this.generateTokens(payload)
@@ -50,11 +52,13 @@ export class AuthService {
                 },
                 {
                     secret: process.env.JWT_REFRESH_TOKEN_SECRET,
-                    expiresIn: '5m',
+                    expiresIn: '1h',
                 }
             )
         ])
 
         return {accessToken, refreshToken}
     }
+
+
 }
