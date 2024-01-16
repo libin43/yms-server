@@ -4,7 +4,6 @@ import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { JsonWebTokenError, TokenExpiredError } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
-import { Observable } from 'rxjs';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt-access-token') {
@@ -30,7 +29,6 @@ export class JwtAuthGuard extends AuthGuard('jwt-access-token') {
     // }
 
     handleRequest<TUser = any>(err: any, user: any, info: any, context: ExecutionContext, status?: any): TUser {
-        // console.log(err, user, info,context,status,'caught in hahahahah');
         console.log(info, err);
         
         if(info instanceof TokenExpiredError  ){

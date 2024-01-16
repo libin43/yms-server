@@ -20,18 +20,17 @@ import { AuthModule } from './auth/auth.module';
       formatError: (error) => {
         console.log(error,'in gpql error formatter');
         const originalError = error.extensions?.originalError as Error;
-       console.log(originalError);
        
         if (!originalError) {
           return {
             message: error.message,
             code: error.extensions?.code,
+
           };
         }
         return {
           message: originalError.message,
           code: error.extensions?.code,
-          status: error.extensions?.statusCode,
           // stacktrace: error.extensions?.stacktrace
         };
       },

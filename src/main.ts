@@ -7,10 +7,18 @@ import { PrismaClientExceptionFilter } from './exception-filters/prisma-exceptio
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  app.enableCors({
-    credentials: true,
-    origin: 'https://sandbox.embed.apollographql.com',
-  })
+  const corsOptions = {
+    "origin": "http://localhost:3001",
+    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+    "allowedHeaders": "Content-Type,Authorization",
+    "credentials": true,
+  }
+
+  app.enableCors(corsOptions)
+  // app.enableCors({
+  //   credentials: true,
+  //   origin: 'https://sandbox.embed.apollographql.com',
+  // })
 
   app.use(cookieParser());
 

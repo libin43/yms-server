@@ -25,12 +25,11 @@ export class AuthResolver {
             refreshToken,
             role,
         } = loginRes
-console.log(loginRes,'dfad');
-
+        console.log(loginRes, 'dfad');
 
         // Set secure HTTP-only cookie in the response
         const secureCookieOptions = {
-            httpOnly: true,
+            // httpOnly: true,
             maxAge: 60 * 60 * 60,
             secure: true, // Set to true in production
             sameSite: 'none', // Adjust according to your requirements

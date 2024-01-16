@@ -1,7 +1,7 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { YardService } from 'src/yard/yard.service';
 import { JwtService } from '@nestjs/jwt';
-import { AuthenticationError } from '@nestjs/apollo';
+import { CustomGraphQLError } from 'src/common/errors/custom.errors';
 
 @Injectable()
 export class AuthService {
@@ -18,7 +18,7 @@ export class AuthService {
 
     async yardLogin (email: string, password: string): Promise<any> {
         const user = await this.yardService.verifyUser(email, password)        
-        if(!user?.user) throw new AuthenticationError('Email and password doesnot match');
+        if(!user?.user) throw new CustomGraphQLError(401,'Email and password doesnot match', "UNAUTHORIZED_ERROR");
        
         const {id, yard_name, role} = user.user
         const payload = {id, yard_name, role}

@@ -7,12 +7,14 @@ import { PassportModule } from '@nestjs/passport';
 import { jwtConstants } from './constants';
 import { AccessTokenStrategy } from './strategies/accessToken.strategy';
 import { RefreshTokenStrategy } from './strategies/refreshToken.strategy';
+import { GoogleOauthStrategy } from './strategies/google.oauth.strategy';
 
 @Module({
   imports: [
     YardModule,
-    JwtModule.register({})
+    JwtModule.register({}),
+    // PassportModule.register({})
   ],
-  providers: [AuthService, AuthResolver, AccessTokenStrategy, RefreshTokenStrategy]
+  providers: [AuthService, AuthResolver, AccessTokenStrategy, RefreshTokenStrategy, GoogleOauthStrategy]
 })
 export class AuthModule {}
