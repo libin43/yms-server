@@ -4,8 +4,9 @@ import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
-import { YardModule } from './yard/yard.module';
-import { AuthModule } from './auth/auth.module';
+import { join } from 'path';
+import { VehicleModule } from './vehicle/vehicle.module';
+import { UserModule } from './user/user.module';
 
 
 @Module({
@@ -14,8 +15,11 @@ import { AuthModule } from './auth/auth.module';
       driver: ApolloDriver,
       context: ({req, res}) => ({req, res}),
       playground: false,
+      autoSchemaFile: join(process.cwd(), 'src/schema.graphql'),
+      subscriptions: {
+        'graphql-ws': true,
+      },
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
-      typePaths: ['./**/*.graphql'],
       status400ForVariableCoercionErrors: true,
       formatError: (error) => {
         console.log(error,'in gpql error formatter');
@@ -35,9 +39,9 @@ import { AuthModule } from './auth/auth.module';
         };
       },
     }),
+    VehicleModule,
+    UserModule,
 
-    YardModule,
-    AuthModule,
 
   ],
   controllers: [AppController],

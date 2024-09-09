@@ -1,0 +1,108 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Vehicle {
+  """Id"""
+  id: String!
+
+  """Make"""
+  make: String!
+
+  """Model"""
+  model: String!
+
+  """Model"""
+  colour: String!
+}
+
+type User {
+  """First name"""
+  fname: String!
+
+  """Last name"""
+  lname: String!
+
+  """Contact"""
+  contact: String!
+
+  """Role"""
+  role: UserRole!
+}
+
+"""The roles of the user"""
+enum UserRole {
+  ADMIN
+  USER
+}
+
+type Query {
+  allVehicles: [Vehicle!]!
+  vehicle(id: Int!): Vehicle!
+  user(id: Int!): User!
+}
+
+type Mutation {
+  createVehicle(createVehicleInput: CreateVehicleInput!): Vehicle!
+  updateVehicle(updateVehicleInput: UpdateVehicleInput!): Vehicle!
+  removeVehicle(id: Int!): Vehicle!
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: Int!): User!
+}
+
+input CreateVehicleInput {
+  """Make"""
+  make: String!
+
+  """Model"""
+  model: String!
+
+  """Model"""
+  colour: String!
+}
+
+input UpdateVehicleInput {
+  """Make"""
+  make: String
+
+  """Model"""
+  model: String
+
+  """Model"""
+  colour: String
+  id: Int!
+}
+
+input CreateUserInput {
+  """First name"""
+  fname: String!
+
+  """Last name"""
+  lname: String!
+
+  """Contact"""
+  contact: String!
+
+  """Role"""
+  role: UserRole!
+}
+
+input UpdateUserInput {
+  """First name"""
+  fname: String
+
+  """Last name"""
+  lname: String
+
+  """Contact"""
+  contact: String
+
+  """Role"""
+  role: UserRole
+  id: Int!
+}
+
+type Subscription {
+  subscriptionAllVehicles: Vehicle!
+}

@@ -23,6 +23,8 @@ async function bootstrap() {
   app.use(cookieParser());
 
   app.useGlobalFilters(new PrismaClientExceptionFilter()) //Prisma exception filter used globally
+
+  app.enableShutdownHooks();
   
   await app.listen(3000);
 }
