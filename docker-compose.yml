@@ -1,1 +1,62 @@
-version: '3.9'
+# version: '3.9'
+
+services:
+  production:
+    container_name: prod
+    build:
+      context: .
+      target: production
+    # environment:
+    # - NODE_ENV=production
+    ports:
+    - "3001:3000"
+    depends_on:
+      - postgres-dev
+      - pgadmin
+
+
+  development:
+    container_name: dev
+    build:
+      context: .
+      target: development
+    environment:
+    - NODE_ENV=development
+    ports:
+    - "3001:3000"
+    # volumes:
+    # - .:/usr/src/app
+    # - node_modules:/usr/src/app/node_modules  # Use a named volume for node_modules
+    depends_on:
+      - postgres-dev
+      - pgadmin
+
+  postgres-dev:
+    container_name: psql-dev-db
+    image: postgres:latest
+    restart: always
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env.local
+    volumes:
+      - postgres_db_dev:/var/lib/postgresql/data
+    # environment:
+    #   - POSTGRES_DEV_DB= ${POSTGRES_DEV_DB}
+    #   - POSTGRES_DEV_USER= ${POSTGRES_DEV_USER}
+    #   - POSTGRES_DEV_PASSWORD= ${POSTGRES_DEV_PASSWORD}
+
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4:latest
+    restart: always
+    ports:
+      - "5050:80"
+    env_file:
+      - .env
+    depends_on:
+      - postgres-dev
+ 
+volumes:
+  postgres_db_dev:
+  # node_modules:

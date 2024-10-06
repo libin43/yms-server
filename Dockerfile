@@ -1,42 +1,61 @@
-# FROM node:20.11.1-alpine AS base
+FROM node:20.11.1-alpine AS base
 
-# WORKDIR /usr/src/app
+WORKDIR /usr/src/app
 
-# COPY package*.json ./
-
-
-
-# FROM base as development
-
-# RUN npm install
-
-# COPY . .
-
-# EXPOSE 7000
-
-# CMD [ "npm", "run", "start:dev" ]
+COPY package*.json ./
+# COPY prisma ./prisma
 
 
+# FROM base AS test
 
-# FROM base AS builder
+# # RUN npm install
 
-# # WORKDIR /usr/src/app
-
-# RUN npm -v
-
-# # COPY package*.json ./
-
-# RUN npm install
+# RUN npm i --only=dev
 
 # COPY . .
 
-# RUN npm run build
-
-# RUN npm prune --production # Remove dev dependencies
+# CMD [ "npm", "run", "test:watchAll" ]
 
 
 
-# FROM builder as production
+FROM base AS development
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 3000
+
+RUN npx prisma generate
+
+CMD [ "npm", "run", "start:dev" ]
+
+
+
+FROM base AS builder
+
+
+RUN npm -v
+
+RUN npm install
+
+COPY . .
+
+# EXPOSE 3000
+
+
+RUN npx prisma generate
+
+# RUN npx prisma migrate deploy
+
+RUN npm run build
+RUN ls -l /usr/src/app/dist/src/main.js
+
+RUN npm prune --production
+
+
+
+FROM builder AS production
 
 # ARG NODE_ENV=production
 
@@ -44,34 +63,10 @@
 
 # WORKDIR /usr/src/app
 
-# COPY package*.json ./
-
-# RUN npm i --only=production
+RUN npm i --only=production
 
 # COPY --from=builder /usr/src/app/dist ./dist
-# COPY --from=builder /usr/src/app/package.json .
-# COPY --from=builder /usr/src/app/.env .
+# COPY --from=builder /usr/src/app/package.json ./
+# COPY --from=builder /usr/src/app/.env ./
 
-# CMD [ "npm", "run", "start:prod" ]
-
-
-FROM node:20.11.1
-
-WORKDIR /usr/src/app
-
-COPY package*.json ./
-# COPY prisma ./prisma
-
-RUN npm install
-
-
-COPY . .
-
-EXPOSE 7000
-
-RUN npm i @prisma/client
-
-# RUN npx prisma generate --schema=./prisma/schema.prisma
-
-CMD [ "npm", "run", "start:dev" ]
-
+CMD ["sh", "-c", "npx prisma migrate deploy && npm run start:prod"]
