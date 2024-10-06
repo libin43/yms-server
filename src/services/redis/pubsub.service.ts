@@ -1,9 +1,9 @@
-import { Injectable, OnModuleDestroy } from '@nestjs/common';
+import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { RedisPubSub } from 'graphql-redis-subscriptions';
 import { Redis } from 'ioredis';
 
 @Injectable()
-export class PubSubService implements OnModuleDestroy {
+export class PubSubService implements OnModuleDestroy, OnModuleInit {
     private pubSub: RedisPubSub;
     private publisher: Redis;
     private subscriber: Redis;
@@ -33,6 +33,14 @@ export class PubSubService implements OnModuleDestroy {
     asyncIterator(trigger: string) {
         return this.pubSub.asyncIterator(trigger)
     }
+
+    async onModuleInit() {
+        console.log('PubSubService initialized')
+        // Optionally, you can validate Redis connection
+        await this.publisher.ping();
+        await this.subscriber.ping();
+    }
+
 
     onModuleDestroy() {
         this.pubSub.close()

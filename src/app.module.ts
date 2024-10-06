@@ -16,6 +16,7 @@ import { UserModule } from './user/user.module';
       context: ({req, res}) => ({req, res}),
       playground: false,
       autoSchemaFile: join(process.cwd(), 'src/schema.graphql'),
+      introspection: true,
       subscriptions: {
         'graphql-ws': true,
       },

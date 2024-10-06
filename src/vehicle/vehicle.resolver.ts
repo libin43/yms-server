@@ -32,7 +32,17 @@ export class VehicleResolver {
 
   @Subscription(() => Vehicle, {
     name: 'subscriptionAllVehicles',
-    resolve: (payload) => payload.vehicleAdded, 
+    filter(payload, variables, context) {
+      console.log(variables,'var');
+      console.log(payload,'payload');
+      
+      
+      if(payload.vehicleAdded.colour === 'green') {
+        return true
+      }
+      return false
+    },
+    resolve: (payload) => payload.vehicleAdded,
   })
   findAllVehicle() {
     // return pubSub.asyncIterator('VEHICLE_ADDED_EVENT')

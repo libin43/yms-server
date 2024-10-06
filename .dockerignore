@@ -3,8 +3,7 @@ test
 .git
 .gitignore
 .prettierrc
-files
+.eslintrc.js
 dist
-.data
 Dockerfile
 README.md
